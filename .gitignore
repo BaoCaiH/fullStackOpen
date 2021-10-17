@@ -105,3 +105,8 @@ dist
 
 # MacOS system file
 .DS_Store
+
+# Lessons
+*/src
+*/public
+part[0-9]/*.*
