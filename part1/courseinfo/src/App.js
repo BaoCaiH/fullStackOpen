@@ -1,55 +1,91 @@
 import React from 'react'
+import { useState } from 'react'
 
-const Header = (props) => {
+const Header = ({course}) => {
   return (
     <>
-      <h1>{props.course}</h1>
+      <h1>{course}</h1>
     </>
   )
 }
 
-const Part = (props) => {
+const Display = ({counter}) => {
+  return (
+    <div>{counter}</div>
+  )
+}
+
+const Button = ({handleClick, text}) => (
+  <button onClick={handleClick}>
+    {text}
+  </button>
+)
+
+const Part = ({part}) => {
   return (
     <>
       <p>
-        {props.part} {props.exercises}
+        {part.name} {part.exercises}
       </p>
     </>
   )
 }
 
-const Content = (props) => {
+const Content = ({parts}) => {
   return (
     <>
-      <Part part={props.parts[0]} exercises={props.exercises[0]} />
-      <Part part={props.parts[1]} exercises={props.exercises[1]} />
-      <Part part={props.parts[2]} exercises={props.exercises[2]} />
+      <Part part={parts[0]} />
+      <Part part={parts[1]} />
+      <Part part={parts[2]} />
     </>
   )
 }
 
-const Total = (props) => {
+const Total = ({exercises}) => {
   return (
     <>
-      <p>Number of exercises {props.exercises[0] + props.exercises[1] + props.exercises[2]}</p>
+      <p>Number of exercises {exercises[0] + exercises[1] + exercises[2]}</p>
     </>
   )
 }
 
-const App = () => {
-  const course = 'Half Stack application development'
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
+const App = (props) => {
+  const [ counter, setCounter ] = useState(0)
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component',
+        exercises: 14
+      }
+    ]
+  }
+
+  const handleClick = () => {
+    console.log('add 1');
+    setCounter(counter + 1);
+  }
+  const handleReset = () => {
+    console.log('reset');
+    setCounter(0);
+  }
 
   return (
     <div>
-      <Header course={course}/>
-      <Content parts={[part1, part2, part3]} exercises={[exercises1, exercises2, exercises3]}/>
-      <Total exercises={[exercises1, exercises2, exercises3]} />
+      <Header course={course.name} />
+      <Display counter={counter} />
+      <Button handleClick={handleClick} text='add 1' />
+      <Button handleClick={handleReset} text='reset' />
+      <Content parts={course.parts} />
+      <Total exercises={course.parts.map(p => p.exercises)} />
     </div>
   )
 }
