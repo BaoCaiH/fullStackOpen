@@ -7,6 +7,8 @@ const Submit = ({
   setPersons,
   setNewName,
   setNewNumber,
+  setMessage,
+  setMessageType,
 }) => {
   const handleAddName = (event) => {
     event.preventDefault();
@@ -23,17 +25,37 @@ const Submit = ({
       window.confirm(
         `${newName} is already added to phonebook, replace old number with a new one?`
       ) &&
-        PhoneBook.update(contactIndex, nameObject).then((updatedContact) =>
-          setPersons(
-            persons.map((person) =>
-              person.id !== contactIndex ? person : updatedContact
-            )
-          )
-        );
+        PhoneBook.update(contactIndex, nameObject)
+          .then((updatedContact) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== contactIndex ? person : updatedContact
+              )
+            );
+            setMessage(`Updated ${updatedContact.name}`);
+            setMessageType("info");
+            setTimeout(() => {
+              setMessage("");
+            }, 5000);
+          })
+          .catch((error) => {
+            PhoneBook.getAll().then((contacts) => setPersons(contacts));
+            setMessage(`${nameObject.name} was already deleted from server`);
+            console.log(error);
+            setMessageType("error");
+            setTimeout(() => {
+              setMessage("");
+            }, 5000);
+          });
     } else {
-      PhoneBook.create(nameObject).then((newContact) =>
-        setPersons(persons.concat(newContact))
-      );
+      PhoneBook.create(nameObject).then((newContact) => {
+        setPersons(persons.concat(newContact));
+        setMessage(`Added ${newContact.name}`);
+        setMessageType("info");
+        setTimeout(() => {
+          setMessage("");
+        }, 5000);
+      });
     }
     setNewName("");
     setNewNumber("");
