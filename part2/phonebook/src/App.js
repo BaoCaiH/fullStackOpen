@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Persons from "./components/Persons";
 import PhoneBook from "./services/PhoneBook";
 import Filter from "./components/Filter";
 import Input from "./components/Input";
 import Submit from "./components/Submit";
+import Message from "./components/Message";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [message, setMessage] = useState("show message here");
+  const [messageType, setMessageType] = useState("info");
 
   useEffect(() => {
     PhoneBook.getAll().then((contacts) => {
@@ -26,6 +28,7 @@ const App = () => {
 
   return (
     <div>
+      <Message message={message} type={messageType} />
       <h2>Phonebook</h2>
       <Filter filter={filter} setFilter={setFilter} />
       <h3>add a new</h3>
@@ -43,10 +46,17 @@ const App = () => {
           setPersons={setPersons}
           setNewName={setNewName}
           setNewNumber={setNewNumber}
+          setMessage={setMessage}
+          setMessageType={setMessageType}
         />
       </form>
       <h2>Numbers</h2>
-      <Persons persons={filterPerson()} setPersons={setPersons} />
+      <Persons
+        persons={filterPerson()}
+        setPersons={setPersons}
+        setMessage={setMessage}
+        setMessageType={setMessageType}
+      />
     </div>
   );
 };
