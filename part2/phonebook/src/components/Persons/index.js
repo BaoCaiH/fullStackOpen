@@ -1,11 +1,13 @@
 import Person from "../Person";
 
-const Persons = ({persons}) => {
-    return (
-        <ul>
-            {persons.map(person => <Person key={person.name} person={person} />)}
-        </ul>
-    )
-}
+const Persons = ({ persons, setPersons }) => {
+  return (
+    <ul>
+      {persons.map((person) => (
+        <Person key={person.name} person={person} setPersons={setPersons} />
+      ))}
+    </ul>
+  );
+};
 
-export default Persons
+export default Persons;
