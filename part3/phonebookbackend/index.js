@@ -1,5 +1,11 @@
 const express = require("express");
+const morgan = require("morgan");
 const app = express();
+
+morgan.token("reqBody", (req, res) => {
+  // return JSON.stringify(req.body);
+  return "Yeah I'm not doing that";
+});
 
 let persons = [
   {
@@ -25,6 +31,17 @@ let persons = [
 ];
 
 app.use(express.json());
+// app.use(morgan("tiny"));
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :reqBody",
+    {
+      skip: (request, response) => {
+        return request.method !== "POST";
+      },
+    }
+  )
+);
 
 // Home
 app.get("/", (request, response) => {
@@ -61,9 +78,6 @@ app.delete("/api/persons/:id", (request, response) => {
 
 app.post("/api/persons", (request, response) => {
   const newPerson = request.body;
-  console.log("before");
-  console.log(newPerson);
-  console.log("after");
   const newPersonName = newPerson.name ? newPerson.name : null;
   const newPersonNumber = newPerson.number ? newPerson.number : null;
   if (!newPersonName || !newPersonNumber) {
