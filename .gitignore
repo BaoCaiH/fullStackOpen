@@ -110,3 +110,4 @@ dist
 */src
 */public
 part[0-9]/*.*
+*/*/*/*.rest
