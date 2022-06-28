@@ -11,13 +11,17 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
-  const [message, setMessage] = useState("show message here");
+  const [message, setMessage] = useState("app messages here");
   const [messageType, setMessageType] = useState("info");
 
   useEffect(() => {
     PhoneBook.getAll().then((contacts) => {
       setPersons(contacts);
     });
+
+    setTimeout(() => {
+      setMessage("");
+    }, 5000);
   }, []);
 
   const filterPerson = () => {
