@@ -40,7 +40,7 @@ const Submit = ({
           })
           .catch((error) => {
             PhoneBook.getAll().then((contacts) => setPersons(contacts));
-            setMessage(`${nameObject.name} was already deleted from server`);
+            setMessage(error.response.data.error);
             console.log(error);
             setMessageType("error");
             setTimeout(() => {
@@ -48,14 +48,23 @@ const Submit = ({
             }, 5000);
           });
     } else {
-      PhoneBook.create(nameObject).then((newContact) => {
-        setPersons(persons.concat(newContact));
-        setMessage(`Added ${newContact.name}`);
-        setMessageType("info");
-        setTimeout(() => {
-          setMessage("");
-        }, 5000);
-      });
+      PhoneBook.create(nameObject)
+        .then((newContact) => {
+          setPersons(persons.concat(newContact));
+          setMessage(`Added ${newContact.name}`);
+          setMessageType("info");
+          setTimeout(() => {
+            setMessage("");
+          }, 5000);
+        })
+        .catch((error) => {
+          setMessage(error.response.data.error);
+          console.log(error);
+          setMessageType("error");
+          setTimeout(() => {
+            setMessage("");
+          }, 5000);
+        });
     }
     setNewName("");
     setNewNumber("");

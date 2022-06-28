@@ -111,3 +111,7 @@ dist
 */public
 part[0-9]/*.*
 */*/*/*.rest
+*/*/.eslintignore
+*/*/.eslintrc.js
+*/*/.prettierrc.js
+part3/phonebookbackend/mongo.js
